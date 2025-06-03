@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.user_model import Usuario
+from app.models.user import Usuario
 from app.schemas.user_schema import UsuarioCreate
 
 def get_all(db: Session):

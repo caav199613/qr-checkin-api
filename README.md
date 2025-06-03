@@ -7,6 +7,9 @@ Tener Python 3.8+ instalado
 Tener MySQL instalado y corriendo
 Tener acceso a consola o terminal (CMD, PowerShell, Bash)
 
+* Crear archivo .env:
+
+Se debe duplicar el archivo .env.test y se renombra .env
 
 * Crear entorno virtual
 
@@ -28,8 +31,20 @@ pip install -r requirements.txt
 
 * Crear base de datos MySQL
 
-```sql
-CREATE DATABASE usuariosdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```cmd
+python -m app.create_db
+```
+
+* Correr la Aplicacion
+
+```cmd
+uvicorn app.main:app --reload
 ```
 
 
+## Abrir el navegador y probar
+En el navegador abre:
+
+```arduino
+http://127.0.0.1:8000/docs
+```
