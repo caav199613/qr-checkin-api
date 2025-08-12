@@ -29,6 +29,9 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+* Crear archivo .env con las credenciales de acceso a la base de datos MySQL
+
+
 * Crear base de datos MySQL
 
 ```cmd
