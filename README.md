@@ -47,7 +47,7 @@ uvicorn app.main:app --reload
 
 ## Abrir el navegador y probar
 En el navegador abre:
-
+Interfaz grafica de documetacion que ofrece el framework "Fast API"
 ```arduino
 http://127.0.0.1:8000/docs
 ```
