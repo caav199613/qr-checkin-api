@@ -6,9 +6,13 @@ class TipoIdentificacion(str, enum.Enum):
     CC = "CC"
     CE = "CE"
     TI = "TI"
-    TE = "TE"
     RC = "RC"
     Pasaporte = "Pasaporte"
+
+class Jornada(str, enum.Enum):   
+    tarde = "tarde"
+    unica = "unica"
+    manana= "manana"
 
 class Usuario(Base):
     __tablename__ = "usuarios"
@@ -19,3 +23,8 @@ class Usuario(Base):
     numero_identificacion = Column(String(50), unique=True, nullable=False)
     correo = Column(String(100), unique=True, nullable=False)
     telefono = Column(String(20), nullable=True)
+    jornada = Column(Enum(Jornada), nullable=False)
+    grado = Column(String(20), nullable=False)
+    codigo_grado = Column(Integer,nullable=False)
+    acudiente = Column(String(20),nullable=False)
+    numero_acudiente = Column(String(20),nullable=False)
