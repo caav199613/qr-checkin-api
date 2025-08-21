@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.user import Usuario
-from app.schemas.user_schema import UsuarioCreate, UsuarioUpdate
+from app.schemas.estudiante_schema import UsuarioCreate, UsuarioUpdate
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
@@ -10,8 +10,8 @@ def get_all(db: Session):
     return db.query(Usuario).all()
 
 
-def get_by_numero(db: Session, numero_identificacion: str):
-    """Buscar usuario por número de identificación"""
+def get_by_numero(db: Session, usuario: str):
+    """Buscar usuario por usuario"""
     return db.query(Usuario).filter(
         Usuario.numero_identificacion == numero_identificacion
     ).first()

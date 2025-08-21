@@ -14,8 +14,8 @@ class Jornada(str, enum.Enum):
     unica = "unica"
     manana= "manana"
 
-class Usuario(Base):
-    __tablename__ = "usuarios"
+class estudiante(Base):
+    __tablename__ = "estudiante"
 
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String(100), nullable=False)

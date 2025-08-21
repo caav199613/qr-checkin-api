@@ -10,9 +10,9 @@ def get_all(db: Session):
     return db.query(Bus).all()
 
 
-def get_by_id(db: Session, bus_id: int):
-    """Buscar un bus por ID"""
-    return db.query(Bus).filter(Bus.id == bus_id).first()
+##def get_by_id(db: Session, bus_id: int):
+##    """Buscar un bus por ID"""
+##    return db.query(Bus).filter(Bus.id == bus_id).first()
 
 
 def get_by_placa(db: Session, placa: str):
@@ -42,9 +42,9 @@ def create(db: Session, bus_in: BusCreate):
         raise HTTPException(status_code=409, detail="Error de integridad: placa o empresa duplicada.")
 
 
-def update(db: Session, bus_id: int, data: BusUpdate):
-    """Actualizar un bus por ID"""
-    bus = get_by_id(db, bus_id)
+def update(db: Session, placa: int, data: BusUpdate):
+    """Actualizar un bus por placa"""
+    bus = get_by_placa(db, placa)
     if not bus:
         raise HTTPException(status_code=404, detail="Bus no encontrado")
 
@@ -71,9 +71,9 @@ def update(db: Session, bus_id: int, data: BusUpdate):
         raise HTTPException(status_code=409, detail="Error de integridad al actualizar el bus.")
 
 
-def delete(db: Session, bus_id: int):
-    """Eliminar un bus por ID"""
-    bus = get_by_id(db, bus_id)
+def delete(db: Session, placa: int):
+    """Eliminar un bus por placa"""
+    bus = get_by_placa(db, placa)
     if not bus:
         raise HTTPException(status_code=404, detail="Bus no encontrado")
 

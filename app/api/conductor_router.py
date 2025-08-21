@@ -17,6 +17,8 @@ def listar_conductores(db: Session = Depends(get_db)):
     return conductor_crud.get_all(db)
 
 
+
+
 @router.get("/{conductor_id}", response_model=ConductorResponse)
 def obtener_conductor(conductor_id: int, db: Session = Depends(get_db)):
     conductor = conductor_crud.get_by_id(db, conductor_id)
