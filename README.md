@@ -40,8 +40,8 @@ python -m app.create_db
 
 * Correr la Aplicacion
 
-```cmd
-
+```
+uvicorn app.main:app --reload
 ```
 
 

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.estudiante import estudiante
-from app.schemas.estudiante_schema import estudianteCreate, estudianteUpdate
+from app.schemas.estudiante_schema import estudianteCreate, estudianteUpdate 
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
@@ -8,7 +8,7 @@ from fastapi import HTTPException
 def get_all(db: Session):
     """Obtener todos los estudiantes"""
     return db.query(estudiante).all()
-6
+
 
 def get_by_numero(db: Session, numero_identificacion: str):
     """Buscar estudiante por número de identificación"""

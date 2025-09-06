@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, text
 from app.core.config import URL_WITHOUT_DB, DATABASE_URL, DB_NAME
-from app.models.user import Base
+from app.models.estudiante import Base
 
 def crear_base_datos():
     # Conexión sin base de datos
