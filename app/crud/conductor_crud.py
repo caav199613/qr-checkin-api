@@ -11,9 +11,15 @@ def get_all(db: Session):
     return db.query(Conductor).all()
 
 
-def get_by_id(db: Session, conductor_id: int):
-    """Buscar un conductor por ID"""
-    return db.query(Conductor).filter(Conductor.id == conductor_id).first()
+##def get_by_id(db: Session, conductor_id: int):
+##  """Buscar un conductor por ID"""
+##return db.query(Conductor).filter(Conductor.id == conductor_id).first()
+
+def get_by_numero(db: Session, numero_id: str):
+    """Buscar conductor por número de identificación"""
+    return db.query(Conductor).filter(
+        Conductor.numero_id == numero_id
+    ).first()
 
 
 def create(db: Session, conductor_in: ConductorCreate):
