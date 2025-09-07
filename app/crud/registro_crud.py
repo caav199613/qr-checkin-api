@@ -3,16 +3,48 @@ from app.models.registro import RegistroRuta   # 👈 ajusta la ruta según tu p
 from app.schemas.registro_schema import RegistroCreate, RegistroUpdate
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
+from sqlalchemy import desc
 
 
 def get_all(db: Session):
     """Obtener todos los registros de ruta"""
-    return db.query(RegistroRuta).all()
+    return db.query(RegistroRuta).order_by(desc(RegistroRuta.fecha_y_hora)).all()
 
 
-def get_by_id(db: Session, registro_id: int):
-    """Buscar un registro de ruta por ID"""
+def get_by_id(db: Session, registro_id: str):
+    """Buscar un registro de ruta por ID (UUID en texto)"""
     return db.query(RegistroRuta).filter(RegistroRuta.id == registro_id).first()
+
+
+def get_by_estudiante(db: Session, estudiante_id: str):
+    """Listar registros por estudiante (id_estudiante)"""
+    return (
+        db.query(RegistroRuta)
+        .filter(RegistroRuta.id_estudiante == estudiante_id)
+        .order_by(desc(RegistroRuta.fecha_y_hora))
+        .all()
+    )
+
+
+def get_by_conductor(db: Session, conductor_id: str):
+    """Listar registros por conductor (id_conductor)"""
+    return (
+        db.query(RegistroRuta)
+        .filter(RegistroRuta.id_conductor == conductor_id)
+        .order_by(desc(RegistroRuta.fecha_y_hora))
+        .all()
+    )
+
+
+def get_by_bus(db: Session, bus_id: str):
+    """Listar registros por bus (id_bus)"""
+    return (
+        db.query(RegistroRuta)
+        .filter(RegistroRuta.id_bus == bus_id)
+        .order_by(desc(RegistroRuta.fecha_y_hora))
+        .all()
+    )
+
 
 
 def create(db: Session, registro_in: RegistroCreate):
@@ -27,7 +59,6 @@ def create(db: Session, registro_in: RegistroCreate):
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=409, detail="Error de integridad al crear el registro.")
-
 
 def update(db: Session, registro_id: int, data: RegistroUpdate):
     """Actualizar un registro de ruta por ID"""

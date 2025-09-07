@@ -1,10 +1,11 @@
-from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy import Column, Integer, String,LargeBinary
 from app.core.database import Base
+import uuid
+import enum
 
-
-class Usuario(Base):
+class Admin(Base):
     __tablename__ = "admin"
 
-    id = Column(Integer, primary_key=True, index=True)
-    Usuario = Column(String(100), unique=True, nullable=False)
-    contraseña= Column( String(100), nullable=False)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    usuario = Column(String(50), unique=True, nullable=False)
+    contrasena = Column(LargeBinary, nullable=False)  # almacena el hash en binario

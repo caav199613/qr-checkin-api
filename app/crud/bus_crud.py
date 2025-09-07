@@ -10,11 +10,6 @@ def get_all(db: Session):
     return db.query(Bus).all()
 
 
-##def get_by_id(db: Session, bus_id: int):
-##    """Buscar un bus por ID"""
-##    return db.query(Bus).filter(Bus.id == bus_id).first()
-
-
 def get_by_placa(db: Session, placa: str):
     """Buscar un bus por placa"""
     return db.query(Bus).filter(Bus.placa == placa).first()
@@ -22,12 +17,9 @@ def get_by_placa(db: Session, placa: str):
 
 def create(db: Session, bus_in: BusCreate):
     """Crear un bus nuevo"""
-    # Validar duplicados en placa y empresa
+    # Validar duplicados en placa
     if get_by_placa(db, bus_in.placa):
         raise HTTPException(status_code=409, detail="La placa ya está registrada.")
-
-    if db.query(Bus).filter(Bus.empresa == bus_in.empresa).first():
-        raise HTTPException(status_code=409, detail="La empresa ya tiene un bus registrado.")
 
     # Crear instancia
     bus = Bus(**bus_in.model_dump())
@@ -49,14 +41,8 @@ def update(db: Session, placa: int, data: BusUpdate):
         raise HTTPException(status_code=404, detail="Bus no encontrado")
 
     # Validar si se intenta cambiar placa y ya existe en otro bus
-    if data.placa and data.placa != bus.placa:
-        if get_by_placa(db, data.placa):
-            raise HTTPException(status_code=409, detail="La placa ya está registrada.")
-
-    # Validar si se intenta cambiar empresa y ya existe en otro bus
-    if data.empresa and data.empresa != bus.empresa:
-        if db.query(Bus).filter(Bus.empresa == data.empresa).first():
-            raise HTTPException(status_code=409, detail="La empresa ya tiene un bus registrado.")
+    if data.placa and data.placa != bus.placa and get_by_placa(db, data.placa):
+        raise HTTPException(status_code=409, detail="La placa ya está registrada.")
 
     # Actualizar solo los campos enviados
     for k, v in data.model_dump(exclude_unset=True).items():

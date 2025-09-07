@@ -2,20 +2,21 @@ from pydantic import BaseModel
 from typing import Optional
 
 class ConductorBase(BaseModel):
-    nombre_conductor: str
+    nombre: str
     numero_id: str
     tipo_id: str
-    numero_conductor: str
-
+    numero: str
+    usuario: str
 class ConductorCreate(ConductorBase):
-    pass
+    contraseña: str
 
 class ConductorUpdate(BaseModel):
-    nombre_conductor: Optional[str] = None
+    nombre: Optional[str] = None
     numero_id: Optional[str] = None
     tipo_id: Optional[str] = None
-    numero_conductor: Optional[str] = None
-
+    numero: Optional[str] = None
+    contraseña: Optional[str] = None
+    
     class Config:
         extra = "forbid"  # para no aceptar campos extra
 

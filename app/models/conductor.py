@@ -1,12 +1,22 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Enum,LargeBinary, String
 from app.core.database import Base
+import uuid
+import enum
+
+class TipoIdentificacion(str, enum.Enum):
+    CC = "CC"
+    CE = "CE"
+    Pasaporte = "Pasaporte"
 
 class Conductor(Base):
     __tablename__ = "conductor"
 
-    id = Column(Integer, primary_key=True, index=True)
-    nombre_conductor = Column(String(100),nullable=False)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    nombre = Column(String(100),nullable=False)
+    tipo_id = Column(Enum(TipoIdentificacion), nullable=False)
     numero_id = Column(String(20), unique=True, nullable=False)
-    usuario_conductor = Column(String (String), unique=True, nullable=False)
-    contraseña_conductor = Column(String (String), nullable=False)
+    numero = Column(String (15), nullable=False)
+    usuario = Column(String (20), unique=True, nullable=False)
+    contrasena = Column(LargeBinary, nullable=False)  # almacena el hash en binario
+
     

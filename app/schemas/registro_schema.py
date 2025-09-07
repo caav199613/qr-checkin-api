@@ -6,6 +6,7 @@ from typing import Optional
 class RegistroBase(BaseModel):
     id_estudiante: int
     id_bus: int
+    id_conductor: int
     fecha_y_hora: datetime
 
 # Para crear
@@ -16,9 +17,10 @@ class RegistroCreate(RegistroBase):
 class RegistroUpdate(BaseModel):
     id_estudiante: Optional[int] = None
     id_bus: Optional[int] = None
+    id_conductor: Optional[int] = None
     fecha_y_hora: Optional[datetime] = None
 
 # Para respuesta
 class RegistroResponse(RegistroBase):
-    registro: int  # identificador único (PK)
+    id: int  # identificador único (PK)
     model_config = ConfigDict(from_attributes=True)

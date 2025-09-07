@@ -18,23 +18,13 @@ def listar_buses(db: Session = Depends(get_db)):
     return bus_crud.get_all(db)
 
 
-@router.get("/buscar/{placa}", response_model=BusResponse)
+@router.get("/{placa}", response_model=BusResponse)
 def obtener_bus_por_placa(placa: str, db: Session = Depends(get_db)):
     """Obtener un bus por su número de placa"""
     bus = bus_crud.get_by_placa(db, placa)
     if not bus:
         raise HTTPException(status_code=404, detail="Bus no encontrado")
     return bus
-
-
-##@router.get("/{bus_id}", response_model=BusResponse)
-##def obtener_bus(bus_id: int, db: Session = Depends(get_db)):
-##    """Obtener un bus por ID"""
-##    bus = bus_crud.get_by_id(db, bus_id)
-##    if not bus:
-##        raise HTTPException(status_code=404, detail="Bus no encontrado")
-##    return bus
-
 
 @router.post("/", response_model=BusResponse, status_code=201)
 def crear_bus(bus_in: BusCreate, db: Session = Depends(get_db)):
@@ -44,7 +34,7 @@ def crear_bus(bus_in: BusCreate, db: Session = Depends(get_db)):
 
 @router.put("/{placa}", response_model=BusResponse)
 def actualizar_bus(placa: int, bus_in: BusUpdate, db: Session = Depends(get_db)):
-    """Actualizar un bus por ID"""
+    
     return bus_crud.update(db, placa, bus_in)
 
 

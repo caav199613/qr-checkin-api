@@ -1,38 +1,29 @@
 from sqlalchemy.orm import Session
-from app.models.admin import Usuario
-from app.schemas.admin_schema import UsuarioCreate, UsuarioUpdate
+from app.models.admin import Admin
+from app.schemas.admin_schema import AdminCreate, AdminUpdate
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
 
 def get_all(db: Session):
-    """Obtener todos los usuarios"""
-    return db.query(Usuario).all()
+    """Obtener todos los admins"""
+    return db.query(Admin).all()
 
 
-def get_by_numero(db: Session, numero_identificacion: str):
-    """Buscar usuario por número de identificación"""
-    return db.query(Usuario).filter(
-        Usuario.numero_identificacion == numero_identificacion
+def get_by_usuario(db: Session, usuario: str):
+    """Buscar admin por número de identificación"""
+    return db.query(Admin).filter(
+        Admin.usuario == usuario
     ).first()
 
-
-def get_by_correo(db: Session, correo: str):
-    """Buscar usuario por correo"""
-    return db.query(Usuario).filter(Usuario.correo == correo).first()
-
-
-def create(db: Session, usuario_in: UsuarioCreate):
-    """Crear un usuario nuevo"""
+def create(db: Session, admin_in: AdminCreate):
+    """Crear un admin nuevo"""
     # Validar duplicados
-    if get_by_numero(db, usuario_in.numero_identificacion):
+    if get_by_usuario(db, admin_in.usuario):
         raise HTTPException(status_code=409, detail="El número de identificación ya está registrado.")
 
-    if get_by_correo(db, usuario_in.correo):
-        raise HTTPException(status_code=409, detail="El correo ya está registrado.")
-    
     # Crear instancia
-    user = Usuario(**usuario_in.model_dump())  # Pydantic v2
+    user = Admin(**admin_in.model_dump())  # Pydantic v2
     db.add(user)
 
     try:
@@ -44,22 +35,13 @@ def create(db: Session, usuario_in: UsuarioCreate):
         raise HTTPException(status_code=409, detail="Error de integridad: número de identificación o correo duplicado.")
 
 
-def update_by_numero(db: Session, numero_path: str, data: UsuarioUpdate):
-    """Actualizar usuario por número de identificación"""
-    user = db.query(Usuario).filter(Usuario.numero_identificacion == numero_path).first()
+def update_by_usuario(db: Session, usuario: str, data: AdminUpdate):
+    """Actualizar admin por número de identificación"""
+    user = db.query(Admin).filter(Admin.usuario == usuario).first()
     if not user:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+        raise HTTPException(status_code=404, detail="Admin no encontrado")
 
-    # 🚫 No permitir cambiar el número de identificación
-    if "numero_identificacion" in data.model_dump(exclude_unset=True):
-        raise HTTPException(status_code=400, detail="No se permite cambiar el número de identificación")
-
-    # ✅ Validar correo solo si lo cambió
-    if data.correo and data.correo != user.correo:
-        if get_by_correo(db, data.correo):
-            raise HTTPException(status_code=409, detail="El correo ya está registrado.")
-
-    # ✅ Actualizar solo los campos enviados
+    # Actualizar solo los campos enviados
     for k, v in data.model_dump(exclude_unset=True).items():
         setattr(user, k, v)
 
@@ -69,15 +51,15 @@ def update_by_numero(db: Session, numero_path: str, data: UsuarioUpdate):
         return user
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=409, detail="Error de integridad al actualizar el usuario.")
+        raise HTTPException(status_code=409, detail="Error de integridad al actualizar el admin.")
 
 
-def delete_by_numero(db: Session, numero_identificacion: str):
-    """Eliminar usuario por número de identificación"""
-    user = get_by_numero(db, numero_identificacion)
-    if not user:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+def delete_by_usuario(db: Session, usuario: str):
+    """Eliminar admin por número de identificación"""
+    admin = get_by_usuario(db, usuario)
+    if not admin:
+        raise HTTPException(status_code=404, detail="Admin no encontrado")
 
-    db.delete(user)
+    db.delete(admin)
     db.commit()
-    return {"detail": "Usuario eliminado"}
+    return {"detail": "Admin eliminado"}

@@ -1,20 +1,22 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
-from typing import Optional
-from app.models.admin import Usuario 
+from pydantic import BaseModel, ConfigDict
 
-class UsuarioBase(BaseModel):
-    Usuario: str
-    contraseña: str
-    
 
-class UsuarioCreate(UsuarioBase):
-    pass
+# Base: lo que comparten todos
+class AdminBase(BaseModel):
+    usuario: str
 
-class UsuarioResponse(UsuarioBase):
+
+# Para crear -> requiere contraseña como texto plano (se hasheará antes de guardar)
+class AdminCreate(AdminBase):
+    contrasena: str
+
+
+class AdminResponse(AdminBase):
+    id: int
     model_config = ConfigDict(from_attributes=True)
 
-class UsuarioUpdate(BaseModel):
-    Usuario: Optional[str] = None
-    contrasela:Optional[str]=None
-    
+
+class AdminUpdate(BaseModel):
+    contrasena: str
+
     model_config = ConfigDict(extra="forbid")

@@ -23,6 +23,7 @@ class estudianteResponse(estudianteBase):
 class estudianteUpdate(BaseModel):
     nombre: Optional[str] = None
     tipo_identificacion: Optional[TipoIdentificacion] = None
+    numero_identificacion: Optional[str] = None
     correo: Optional[EmailStr] = None
     telefono: Optional[str] = None
     jornada: Optional[Jornada] = None   # 👈 Aquí también

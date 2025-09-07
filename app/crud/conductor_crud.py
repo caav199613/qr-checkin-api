@@ -11,10 +11,6 @@ def get_all(db: Session):
     return db.query(Conductor).all()
 
 
-##def get_by_id(db: Session, conductor_id: int):
-##  """Buscar un conductor por ID"""
-##return db.query(Conductor).filter(Conductor.id == conductor_id).first()
-
 def get_by_numero(db: Session, numero_id: str):
     """Buscar conductor por número de identificación"""
     return db.query(Conductor).filter(
@@ -37,7 +33,7 @@ def create(db: Session, conductor_in: ConductorCreate):
 
 def update(db: Session, conductor_id: int, data: ConductorUpdate):
     """Actualizar un conductor"""
-    conductor = get_by_id(db, conductor_id)
+    conductor = get_by_numero(db, conductor_id)
     if not conductor:
         raise HTTPException(status_code=404, detail="Conductor no encontrado")
 
@@ -55,7 +51,7 @@ def update(db: Session, conductor_id: int, data: ConductorUpdate):
 
 def delete(db: Session, conductor_id: int):
     """Eliminar un conductor"""
-    conductor = get_by_id(db, conductor_id)
+    conductor = get_by_numero(db, conductor_id)
     if not conductor:
         raise HTTPException(status_code=404, detail="Conductor no encontrado")
 

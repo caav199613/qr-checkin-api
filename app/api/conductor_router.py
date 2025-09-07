@@ -19,9 +19,9 @@ def listar_conductores(db: Session = Depends(get_db)):
 
 
 
-@router.get("/{conductor_id}", response_model=ConductorResponse)
-def obtener_conductor(conductor_id: int, db: Session = Depends(get_db)):
-    conductor = conductor_crud.get_by_id(db, conductor_id)
+@router.get("/{numero_id}", response_model=ConductorResponse)
+def obtener_conductor(numero_id: int, db: Session = Depends(get_db)):
+    conductor = conductor_crud.get_by_numero(db, numero_id)
     if not conductor:
         raise HTTPException(status_code=404, detail="Conductor no encontrado")
     return conductor
@@ -32,11 +32,11 @@ def crear_conductor(conductor_in: ConductorCreate, db: Session = Depends(get_db)
     return conductor_crud.create(db, conductor_in)
 
 
-@router.put("/{conductor_id}", response_model=ConductorResponse)
-def actualizar_conductor(conductor_id: int, conductor_in: ConductorUpdate, db: Session = Depends(get_db)):
-    return conductor_crud.update(db, conductor_id, conductor_in)
+@router.put("/{numero_id}", response_model=ConductorResponse)
+def actualizar_conductor(numero_id: int, conductor_in: ConductorUpdate, db: Session = Depends(get_db)):
+    return conductor_crud.update(db, numero_id, conductor_in)
 
 
-@router.delete("/{conductor_id}")
-def eliminar_conductor(conductor_id: int, db: Session = Depends(get_db)):
-    return conductor_crud.delete(db, conductor_id)
+@router.delete("/{numero_id}")
+def eliminar_conductor(numero_id: int, db: Session = Depends(get_db)):
+    return conductor_crud.delete(db, numero_id)
