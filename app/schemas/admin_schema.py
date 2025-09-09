@@ -12,7 +12,7 @@ class AdminCreate(AdminBase):
 
 
 class AdminResponse(AdminBase):
-    id: int
+    id: str
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -20,3 +20,8 @@ class AdminUpdate(BaseModel):
     contrasena: str
 
     model_config = ConfigDict(extra="forbid")
+
+
+class AdminLogin(BaseModel):
+    usuario: str
+    contrasena: str   # texto plano para comprobar

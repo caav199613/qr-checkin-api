@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.schemas.admin_schema import AdminCreate, AdminUpdate, AdminResponse
+from app.core.token import crear_token
+from app.schemas.admin_schema import AdminCreate, AdminUpdate, AdminResponse, AdminLogin
 from app.crud import admin_crud
-import bcrypt
 
+import bcrypt
+ 
 router = APIRouter(
     prefix="/admin",
     tags=["Admin"]
@@ -42,3 +44,15 @@ def actualizar_usuario(usuario: str, data: AdminUpdate, db: Session = Depends(ge
 def eliminar_usuario(usuario: str, db: Session = Depends(get_db)):
     """Eliminar usuario por número de identificación"""
     return admin_crud.delete_by_usuario(db, usuario)
+
+@router.post("/login")
+def login(body: AdminLogin, db: Session = Depends(get_db)):
+    """
+    Verifica credenciales de Admin. Retorna 200 si coinciden.
+    """
+    ok = admin_crud.verify_credentials(db, body.usuario, body.contrasena)
+    if not ok:
+        raise HTTPException(status_code=401, detail="Credenciales inválidas.")
+    # Aquí podrías devolver un JWT; por ahora solo confirmamos autenticación.
+    token = crear_token(body.usuario)
+    return {"access_token": token, "token_type": "bearer"}

@@ -21,7 +21,12 @@ class ConductorUpdate(BaseModel):
         extra = "forbid"  # para no aceptar campos extra
 
 class ConductorResponse(ConductorBase):
-    id: int
+    id: str
 
     class Config:
         from_attributes = True  # antes orm_mode = True
+
+
+class ConductorLogin(BaseModel):
+    usuario: str
+    contrasena: str   # texto plano para comprobar

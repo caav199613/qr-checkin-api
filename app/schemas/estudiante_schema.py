@@ -1,26 +1,27 @@
 from pydantic import BaseModel, EmailStr, ConfigDict
 from typing import Optional
-from app.models.estudiante import TipoIdentificacion, Jornada  # 👈 Importa Jornada ya corregida
+from app.models.estudiante import TipoIdentificacion, Jornada  
 
-class estudianteBase(BaseModel):
+class EstudianteBase(BaseModel):
     nombre: str
     tipo_identificacion: TipoIdentificacion
     numero_identificacion: str
     correo: EmailStr
     telefono: Optional[str] = None
-    jornada: Jornada        # 👈 Ahora sí correcto
+    jornada: Jornada 
     grado: str
     codigo_grado: int
     acudiente: str
     numero_acudiente: str
 
-class estudianteCreate(estudianteBase):
+class EstudianteCreate(EstudianteBase):
     pass
 
-class estudianteResponse(estudianteBase):
+class EstudianteResponse(EstudianteBase):
+    id: str
     model_config = ConfigDict(from_attributes=True)
 
-class estudianteUpdate(BaseModel):
+class EstudianteUpdate(BaseModel):
     nombre: Optional[str] = None
     tipo_identificacion: Optional[TipoIdentificacion] = None
     numero_identificacion: Optional[str] = None

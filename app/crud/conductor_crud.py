@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
-
+from app.core.security import verify_password
 from app.models.conductor import Conductor
 from app.schemas.conductor_schema import ConductorCreate, ConductorUpdate
 
@@ -15,6 +15,13 @@ def get_by_numero(db: Session, numero_id: str):
     """Buscar conductor por número de identificación"""
     return db.query(Conductor).filter(
         Conductor.numero_id == numero_id
+    ).first()
+
+
+def get_by_usuario(db: Session, usuario: str):
+    """Buscar admin por número de identificación"""
+    return db.query(Conductor).filter(
+        Conductor.usuario == usuario
     ).first()
 
 
@@ -59,3 +66,9 @@ def delete(db: Session, conductor_id: int):
     db.commit()
     return {"detail": "Conductor eliminado"}
 
+
+def verify_credentials(db: Session, usuario: str, contrasena: str) -> bool:
+    admin = get_by_usuario(db, usuario)
+    if not admin:
+        return False
+    return verify_password(contrasena, admin.contrasena)

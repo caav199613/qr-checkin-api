@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.admin import Admin
 from app.schemas.admin_schema import AdminCreate, AdminUpdate
+from app.core.security import hash_password, verify_password
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
@@ -17,22 +18,22 @@ def get_by_usuario(db: Session, usuario: str):
     ).first()
 
 def create(db: Session, admin_in: AdminCreate):
-    """Crear un admin nuevo"""
-    # Validar duplicados
+    # Validar duplicado de usuario
     if get_by_usuario(db, admin_in.usuario):
-        raise HTTPException(status_code=409, detail="El número de identificación ya está registrado.")
+        raise HTTPException(status_code=409, detail="El usuario ya está registrado.")
 
-    # Crear instancia
-    user = Admin(**admin_in.model_dump())  # Pydantic v2
-    db.add(user)
+    # Hashear contraseña y crear instancia
+    hashed = hash_password(admin_in.contrasena)
+    admin = Admin(usuario=admin_in.usuario, contrasena=hashed)
+    db.add(admin)
 
     try:
         db.commit()
-        db.refresh(user)
-        return user
+        db.refresh(admin)
+        return admin
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=409, detail="Error de integridad: número de identificación o correo duplicado.")
+        raise HTTPException(status_code=409, detail="Error de integridad al crear el admin.")
 
 
 def update_by_usuario(db: Session, usuario: str, data: AdminUpdate):
@@ -63,3 +64,9 @@ def delete_by_usuario(db: Session, usuario: str):
     db.delete(admin)
     db.commit()
     return {"detail": "Admin eliminado"}
+
+def verify_credentials(db: Session, usuario: str, contrasena: str) -> bool:
+    admin = get_by_usuario(db, usuario)
+    if not admin:
+        return False
+    return verify_password(contrasena, admin.contrasena)

@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
 from app.models.estudiante import Estudiante
-from app.schemas.estudiante_schema import estudianteCreate, estudianteUpdate
+from app.schemas.estudiante_schema import EstudianteCreate, EstudianteUpdate
 
 
 def get_all(db: Session):
@@ -25,7 +25,7 @@ def get_by_correo(db: Session, correo: str):
     return db.query(Estudiante).filter(Estudiante.correo == correo).first()
 
 
-def create(db: Session, estudiante_in: estudianteCreate):
+def create(db: Session, estudiante_in: EstudianteCreate):
     """Crear un estudiante nuevo (valida duplicados de número y correo)."""
     if get_by_numero(db, estudiante_in.numero_identificacion):
         raise HTTPException(status_code=409, detail="El número de identificación ya está registrado.")
@@ -46,7 +46,7 @@ def create(db: Session, estudiante_in: estudianteCreate):
         raise HTTPException(status_code=409, detail="Error de integridad: número de identificación o correo duplicado.")
 
 
-def update_by_numero(db: Session, numero_path: str, data: estudianteUpdate):
+def update_by_numero(db: Session, numero_path: str, data: EstudianteUpdate):
     """
     Actualizar estudiante por número de identificación (path).
     - Permite cambiar numero_identificacion SOLO si no existe en otro estudiante.

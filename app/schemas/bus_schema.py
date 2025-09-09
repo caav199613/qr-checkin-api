@@ -19,5 +19,5 @@ class BusUpdate(BaseModel):
 
 # Para respuesta
 class BusResponse(BusBase):
-    id: int  # identificador único (PK)
+    id: str  # identificador único (PK)
     model_config = ConfigDict(from_attributes=True)
