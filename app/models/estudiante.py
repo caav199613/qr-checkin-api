@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy.orm import relationship
 from app.core.database import Base
 import enum
 import uuid
@@ -28,3 +29,6 @@ class Estudiante(Base):
     codigo_grado = Column(Integer,nullable=False)
     acudiente = Column(String(50),nullable=False)
     numero_acudiente = Column(String(20),nullable=False)
+
+
+    registros = relationship("RegistroRuta", back_populates="estudiante")

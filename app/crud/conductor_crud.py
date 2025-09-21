@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
-from app.core.security import verify_password
+from app.core.security import verify_password, hash_password
 from app.models.conductor import Conductor
 from app.schemas.conductor_schema import ConductorCreate, ConductorUpdate
 
@@ -27,7 +27,18 @@ def get_by_usuario(db: Session, usuario: str):
 
 def create(db: Session, conductor_in: ConductorCreate):
     """Crear un nuevo conductor"""
-    conductor = Conductor(**conductor_in.model_dump())
+    
+    hashed_pw = hash_password(conductor_in.contrasena)  # 👈 generar hash
+
+    conductor = Conductor(
+        nombre=conductor_in.nombre,
+        tipo_id=conductor_in.tipo_id,
+        numero_id=conductor_in.numero_id,
+        numero=conductor_in.numero,
+        usuario=conductor_in.usuario,
+        contrasena=hashed_pw,
+    )
+
     db.add(conductor)
     try:
         db.commit()
@@ -68,7 +79,7 @@ def delete(db: Session, conductor_id: int):
 
 
 def verify_credentials(db: Session, usuario: str, contrasena: str) -> bool:
-    admin = get_by_usuario(db, usuario)
-    if not admin:
+    conductor = get_by_usuario(db, usuario)
+    if not conductor:
         return False
-    return verify_password(contrasena, admin.contrasena)
+    return verify_password(contrasena, conductor.contrasena)

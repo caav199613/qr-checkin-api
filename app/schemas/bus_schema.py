@@ -3,7 +3,7 @@ from typing import Optional
 
 # Base
 class BusBase(BaseModel):
-    placa : int
+    placa : str
     empresa: str 
     numero: str
 
@@ -13,7 +13,7 @@ class BusCreate(BusBase):
 
 # Para actualizar
 class BusUpdate(BaseModel):
-    placa : Optional[int] = None
+    placa : Optional[str] = None
     empresa : Optional[str] = None
     numero : Optional[str] = None
 

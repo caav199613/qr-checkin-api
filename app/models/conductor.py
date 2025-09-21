@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Enum,LargeBinary, String
 from app.core.database import Base
+from sqlalchemy.orm import relationship
 import uuid
 import enum
 
@@ -19,4 +20,4 @@ class Conductor(Base):
     usuario = Column(String (20), unique=True, nullable=False)
     contrasena = Column(LargeBinary, nullable=False)  # almacena el hash en binario
 
-    
+    registros = relationship("RegistroRuta", back_populates="conductor")
