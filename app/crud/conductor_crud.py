@@ -48,12 +48,13 @@ def create(db: Session, conductor_in: ConductorCreate):
         db.rollback()
         raise HTTPException(status_code=409, detail="Error de integridad al crear el conductor.")
 
-
 def update(db: Session, conductor_id: int, data: ConductorUpdate):
-    """Actualizar un conductor"""
     conductor = get_by_numero(db, conductor_id)
     if not conductor:
         raise HTTPException(status_code=404, detail="Conductor no encontrado")
+
+    if data.nombre:
+        data.nombre = to_capitalize(data.nombre.strip())
 
     for k, v in data.model_dump(exclude_unset=True).items():
         setattr(conductor, k, v)
@@ -65,7 +66,6 @@ def update(db: Session, conductor_id: int, data: ConductorUpdate):
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=409, detail="Error de integridad al actualizar el conductor.")
-
 
 def delete(db: Session, conductor_id: int):
     """Eliminar un conductor"""
