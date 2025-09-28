@@ -1,36 +1,52 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, field_validator
 from typing import Optional
-from app.models.estudiante import TipoIdentificacion, Jornada  
+from app.core.config import to_capitalize  # 👈 usamos la misma función
+
 
 class EstudianteBase(BaseModel):
     nombre: str
-    tipo_identificacion: TipoIdentificacion
+    tipo_identificacion: str
     numero_identificacion: str
-    correo: EmailStr
-    telefono: Optional[str] = None
-    jornada: Jornada 
+    correo: str
+    telefono: str
+    jornada: str
     grado: str
     codigo_grado: int
     acudiente: str
     numero_acudiente: str
 
+    # 👇 Normalizamos el nombre al guardar
+    @field_validator("nombre", "acudiente")
+    def normalize_fields(cls, v: str) -> str:
+        return to_capitalize(v.strip()) if v else v
+
+
 class EstudianteCreate(EstudianteBase):
     pass
 
-class EstudianteResponse(EstudianteBase):
-    id: str
-    model_config = ConfigDict(from_attributes=True)
 
 class EstudianteUpdate(BaseModel):
     nombre: Optional[str] = None
-    tipo_identificacion: Optional[TipoIdentificacion] = None
+    tipo_identificacion: Optional[str] = None
     numero_identificacion: Optional[str] = None
-    correo: Optional[EmailStr] = None
+    correo: Optional[str] = None
     telefono: Optional[str] = None
-    jornada: Optional[Jornada] = None   # 👈 Aquí también
+    jornada: Optional[str] = None
     grado: Optional[str] = None
-    codigo_grado: Optional[int] = None  # 👈 también lo corregí a int
+    codigo_grado: Optional[int] = None
     acudiente: Optional[str] = None
     numero_acudiente: Optional[str] = None
 
-    model_config = ConfigDict(extra="forbid")
+    @field_validator("nombre", "acudiente")
+    def normalize_fields(cls, v: Optional[str]) -> Optional[str]:
+        return to_capitalize(v.strip()) if v else v
+
+    class Config:
+        extra = "forbid"
+
+
+class EstudianteResponse(EstudianteBase):
+    id: str
+
+    class Config:
+        from_attributes = True

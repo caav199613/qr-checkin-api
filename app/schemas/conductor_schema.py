@@ -1,7 +1,7 @@
 from pydantic import BaseModel, field_validator
 from typing import Optional
 from app.models.conductor import TipoIdentificacion
-from app.core.config import to_capitalize  # import desde config.py
+from app.core.config import to_capitalize  # 👈 usamos la función unificada
 
 
 class ConductorBase(BaseModel):
