@@ -1,17 +1,25 @@
+from dotenv import load_dotenv
+import os
+
 def to_upper(value: str) -> str:
     """
     Convierte un string a mayúsculas de forma segura.
     Si el valor es None o vacío, lo devuelve igual.
     """
     return value.upper() if isinstance(value, str) else value
-from dotenv import load_dotenv
-import os
+
 # 👇 Función única de normalización
 def capitalize_value(value: str) -> str:
     """Convierte un string a Capitalize (primera letra mayúscula, resto en minúscula)."""
     return value.capitalize() if isinstance(value, str) else value
 
-load_dotenv() 
+# 👇 Alias para compatibilidad
+def to_capitalize(value: str) -> str:
+    """Alias de capitalize_value para compatibilidad con schemas."""
+    return capitalize_value(value)
+
+# Variables de entorno
+load_dotenv()
 
 DB_NAME = os.getenv("DB_NAME", "qrcheckindb")
 DB_USER = os.getenv("DB_USER", "admin")
