@@ -9,3 +9,4 @@ bcrypt
 jwt
 python-dotenv
 pydantic>=2.0
+qrcode[pil]

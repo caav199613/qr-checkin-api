@@ -1,0 +1,50 @@
+[
+    {
+        "nombre": "sa",
+        "tipo_identificacion": "TI",
+        "numero_identificacion": "12",
+        "correo": "string@example.com",
+        "telefono": "1",
+        "jornada": "mañana",
+        "grado": "string",
+        "codigo_grado": 0,
+        "acudiente": "string",
+        "numero_acudiente": "string"
+    },
+    {
+        "nombre": "carlos",
+        "tipo_identificacion": "TI",
+        "numero_identificacion": "123",
+        "correo": "string1@example.com",
+        "telefono": "123",
+        "jornada": "mañana",
+        "grado": "11",
+        "codigo_grado": 2,
+        "acudiente": "juan",
+        "numero_acudiente": "12"
+    },
+    {
+        "nombre": "juan",
+        "tipo_identificacion": "TI",
+        "numero_identificacion": "12345",
+        "correo": "string2@example.com",
+        "telefono": "1234",
+        "jornada": "mañana",
+        "grado": "10",
+        "codigo_grado": 2,
+        "acudiente": "carlos",
+        "numero_acudiente": "1234"
+    },
+    {
+        "nombre": "camilo",
+        "tipo_identificacion": "TI",
+        "numero_identificacion": "12345",
+        "correo": "string3@example.com",
+        "telefono": "123456",
+        "jornada": "mañana",
+        "grado": "9",
+        "codigo_grado": 2,
+        "acudiente": "carlos",
+        "numero_acudiente": "12345"
+    }
+]

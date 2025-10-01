@@ -1,11 +1,12 @@
 from pydantic import BaseModel, field_validator
 from typing import Optional
-from app.core.config import to_capitalize  # 👈 usamos la misma función
+from app.core.config import to_capitalize
+from app.models.conductor import TipoIdentificacion  # 👈 usamos la misma función
 
 
 class EstudianteBase(BaseModel):
     nombre: str
-    tipo_identificacion: str
+    tipo_identificacion: TipoIdentificacion
     numero_identificacion: str
     correo: str
     telefono: str
@@ -27,7 +28,7 @@ class EstudianteCreate(EstudianteBase):
 
 class EstudianteUpdate(BaseModel):
     nombre: Optional[str] = None
-    tipo_identificacion: Optional[str] = None
+    tipo_identificacion: Optional[TipoIdentificacion] = None
     numero_identificacion: Optional[str] = None
     correo: Optional[str] = None
     telefono: Optional[str] = None
