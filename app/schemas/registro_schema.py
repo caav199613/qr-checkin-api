@@ -4,9 +4,9 @@ from typing import Optional
 
 # Base
 class RegistroBase(BaseModel):
-    id_estudiante: int
-    id_bus: int
-    id_conductor: int
+    id_estudiante: str
+    id_bus: str
+    id_conductor: str
     fecha_y_hora: datetime
 
 # Para crear
@@ -15,9 +15,9 @@ class RegistroCreate(RegistroBase):
 
 # Para actualizar
 class RegistroUpdate(BaseModel):
-    id_estudiante: Optional[int] = None
-    id_bus: Optional[int] = None
-    id_conductor: Optional[int] = None
+    id_estudiante: Optional[str] = None
+    id_bus: Optional[str] = None
+    id_conductor: Optional[str] = None
     fecha_y_hora: Optional[datetime] = None
 
 # Para respuesta
